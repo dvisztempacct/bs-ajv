@@ -47,7 +47,7 @@ external validate :
     [@bs.unwrap] [ | `Schema(schema) | `Key(string) | `Ref(string)],
     Js.Json.t
   ) =>
-  Js.boolean =
+  bool =
   "";
 
 [@bs.send.pipe: t]
@@ -119,12 +119,12 @@ let compileAsync:
 let makeKeyword: unit => Ajv_keyword.t({..});
 
 let setValidator:
-  (Ajv_keyword.t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.boolean) => unit;
+  (Ajv_keyword.t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => bool) => unit;
 
 let setAsyncValidator:
   (
     Ajv_keyword.t('a),
-    (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(Js.boolean)
+    (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(bool)
   ) =>
   unit;
 
@@ -134,10 +134,10 @@ let removeKeyword: (string, t) => t;
 
 let setKeywordType: (Ajv_keyword.t('a), string) => unit;
 
-let setKeywordIsAsync: (Ajv_keyword.t('a), Js.boolean) => unit;
+let setKeywordIsAsync: (Ajv_keyword.t('a), bool) => unit;
 
-let setOptionAllErrors: (Ajv_options.t('a), Js.boolean) => unit;
+let setOptionAllErrors: (Ajv_options.t('a), bool) => unit;
 
-let setOptionJsonPointers: (Ajv_options.t('a), Js.boolean) => unit;
+let setOptionJsonPointers: (Ajv_options.t('a), bool) => unit;
 
-let setOptionRemoveAdditional: (Ajv_options.t('a), Js.boolean) => unit;
+let setOptionRemoveAdditional: (Ajv_options.t('a), bool) => unit;

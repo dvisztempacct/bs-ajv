@@ -2,9 +2,9 @@ open Jest;
 
 describe("string tests", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -47,12 +47,12 @@ describe("string tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected limits should fail to validate", () => {
     let validData =
@@ -64,12 +64,12 @@ describe("string tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected limits should report invalid fields", () => {
     let validData =

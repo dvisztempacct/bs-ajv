@@ -2,9 +2,9 @@ open Jest;
 
 describe("data filtering (removeAdditional option)", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -45,29 +45,29 @@ describe("data filtering (removeAdditional option)", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("errors should be returned as a json array", () => {
     let invalidData = Json.Encode.(object_([("foo", string("bar"))]));
     let handler =
       fun
-      | `Valid(_) => Js.false_
+      | `Valid(_) => false
       | `Invalid(err) =>
         switch (Js.Json.classify(err)) {
-        | Js.Json.JSONArray(_) => Js.true_
+        | Js.Json.JSONArray(_) => true
         | x =>
           Js.log2("INVALID: ", x);
-          Js.false_;
+          false;
         };
     validate(schema, invalidData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("required errors should all be returned", () => {
     let invalidData = Json.Encode.(object_([]));

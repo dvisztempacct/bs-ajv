@@ -18,13 +18,12 @@ let make = () : t('a) => Js.Obj.empty();
  */
 [@bs.set]
 external setValidator :
-  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.boolean) => unit =
+  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => bool) => unit =
   "validate";
 
 [@bs.set]
 external setAsyncValidator :
-  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(Js.boolean)) =>
-  unit =
+  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(bool)) => unit =
   "validate";
 
 /*
@@ -37,13 +36,12 @@ external setAsyncValidator :
    The compiling function.
  */
 [@bs.set]
-external setCompiler :
-  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.boolean) => unit =
+external setCompiler : (t('a), (Js.Json.t, Js.Json.t, 'b) => bool) => unit =
   "compile";
 
 [@bs.set]
 external setAsyncCompiler :
-  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.Promise.t(Js.boolean)) => unit =
+  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.Promise.t(bool)) => unit =
   "compile";
 
 /*
@@ -75,15 +73,14 @@ external setMetaSchema :
 /* `modifying` (boolean)
      _MUST_ be passed if the new keyword modifies data.
    */
-[@bs.set] external setModifying : (t('a), Js.boolean) => unit = "modifying";
+[@bs.set] external setModifying : (t('a), bool) => unit = "modifying";
 
 /*
    `valid` (boolean)
    Pre-define the validation result.  The result returned from the Validation
    function will be ignored.  This optoin cannot be used with macro keywords.
  */
-[@bs.set]
-external setValidationResult : (t('a), Js.boolean) => unit = "valid";
+[@bs.set] external setValidationResult : (t('a), bool) => unit = "valid";
 
 /*
    `$data` (boolean)
@@ -94,8 +91,7 @@ external setValidationResult : (t('a), Js.boolean) => unit = "valid";
    reference requires that keyword has a validating function (as the only
    option or in addition to compile, macro or inline functions).
  */
-[@bs.set]
-external setHasDataReference : (t('a), Js.boolean) => unit = "$data";
+[@bs.set] external setHasDataReference : (t('a), bool) => unit = "$data";
 
 /*
    `async` (boolean)
@@ -104,7 +100,7 @@ external setHasDataReference : (t('a), Js.boolean) => unit = "$data";
    it should return a promise that resolves with a value (bool).  This
    optoin is ignored in case of `macro` or `inline` keywords.
  */
-[@bs.set] external setIsAsync : (t('a), Js.boolean) => unit = "async";
+[@bs.set] external setIsAsync : (t('a), bool) => unit = "async";
 /*
    `errors` (boolean)
    An optional boolean indicating whether keyword returns errors.  If this

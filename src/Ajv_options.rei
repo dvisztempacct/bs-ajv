@@ -35,19 +35,19 @@ type t('a) = Js.t('a);
 
 let make: unit => t({..});
 
-[@bs.set] external setData : (t('a), Js.boolean) => unit = "$data";
+[@bs.set] external setData : (t('a), bool) => unit = "$data";
 
-[@bs.set] external allErrors : (t('a), Js.boolean) => unit = "";
+[@bs.set] external allErrors : (t('a), bool) => unit = "";
 
-[@bs.set] external verbose : (t('a), Js.boolean) => unit = "";
+[@bs.set] external verbose : (t('a), bool) => unit = "";
 
-[@bs.set] external comment : (t('a), Js.boolean) => unit = "$comment";
+[@bs.set] external comment : (t('a), bool) => unit = "$comment";
 
-[@bs.set] external jsonPointers : (t('a), Js.boolean) => unit = "";
+[@bs.set] external jsonPointers : (t('a), bool) => unit = "";
 
-[@bs.set] external uniqueItems : (t('a), Js.boolean) => unit = "";
+[@bs.set] external uniqueItems : (t('a), bool) => unit = "";
 
-[@bs.set] external unicode : (t('a), Js.boolean) => unit = "";
+[@bs.set] external unicode : (t('a), bool) => unit = "";
 
 let format: (t('a), Format.t) => unit;
 
@@ -59,26 +59,26 @@ let missingRefs: (t('a), RefSetting.t) => unit;
 
 let extendRefs: (t('a), RefSetting.t) => unit;
 
-[@bs.set] external removeAdditional : (t('a), Js.boolean) => unit = "";
+[@bs.set] external removeAdditional : (t('a), bool) => unit = "";
 
-[@bs.set] external useDefaults : (t('a), Js.boolean) => unit = "";
+[@bs.set] external useDefaults : (t('a), bool) => unit = "";
 
-[@bs.set] external coerceTypes : (t('a), Js.boolean) => unit = "";
+[@bs.set] external coerceTypes : (t('a), bool) => unit = "";
 
-[@bs.set] external meta : (t('a), Js.boolean) => unit = "";
+[@bs.set] external meta : (t('a), bool) => unit = "";
 
-[@bs.set] external validateSchema : (t('a), Js.boolean) => unit = "";
+[@bs.set] external validateSchema : (t('a), bool) => unit = "";
 
-[@bs.set] external addUsedSchema : (t('a), Js.boolean) => unit = "";
+[@bs.set] external addUsedSchema : (t('a), bool) => unit = "";
 
-[@bs.set] external inlineRefs : (t('a), Js.boolean) => unit = "";
+[@bs.set] external inlineRefs : (t('a), bool) => unit = "";
 
-[@bs.set] external passContext : (t('a), Js.boolean) => unit = "";
+[@bs.set] external passContext : (t('a), bool) => unit = "";
 
-[@bs.set] external ownProperties : (t('a), Js.boolean) => unit = "";
+[@bs.set] external ownProperties : (t('a), bool) => unit = "";
 
-[@bs.set] external multipleOfPrecision : (t('a), Js.boolean) => unit = "";
+[@bs.set] external multipleOfPrecision : (t('a), bool) => unit = "";
 
-[@bs.set] external messages : (t('a), Js.boolean) => unit = "";
+[@bs.set] external messages : (t('a), bool) => unit = "";
 
-[@bs.set] external sourceCode : (t('a), Js.boolean) => unit = "";
+[@bs.set] external sourceCode : (t('a), bool) => unit = "";

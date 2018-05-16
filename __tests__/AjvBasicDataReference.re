@@ -2,7 +2,7 @@ open Jest;
 
 describe("$data reference", () => {
   let options = Ajv_options.make();
-  Ajv_options.setData(options, Js.true_);
+  Ajv_options.setData(options, true);
   /* https://www.npmjs.com/package/ajv#data-reference */
   test("smaller/larger example", () => {
     let schema =
@@ -28,7 +28,7 @@ describe("$data reference", () => {
     Ajv.ajv(options)
     |> Ajv.validate(`Schema(schema), validData)
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("example with self reference", () => {
     let schema =
@@ -53,6 +53,6 @@ describe("$data reference", () => {
     Ajv.ajv(options)
     |> Ajv.validate(`Schema(schema), validData)
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
 });

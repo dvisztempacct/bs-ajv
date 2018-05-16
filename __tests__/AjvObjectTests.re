@@ -2,9 +2,9 @@ open Jest;
 
 describe("object tests", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -86,12 +86,12 @@ describe("object tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("invalid document should validate", () => {
     let validData =
@@ -113,12 +113,12 @@ describe("object tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test(
     "additional property wrt patternProperties keyword should report property name wrt parent object",
@@ -143,17 +143,17 @@ describe("object tests", () => {
       let handler = v => {
         let handlerResult =
           switch (v) {
-          | `Valid(_) => Js.false_
+          | `Valid(_) => false
           | `Invalid(err) =>
             let x = Ajv.Error.toDict(err);
-            Belt_MapString.has(x, "messages") ? Js.true_ : Js.false_;
+            Belt_MapString.has(x, "messages") ? true : false;
           };
         handlerResult;
       };
       validate(schema, validData)
       |> handler
       |> Expect.expect
-      |> Expect.toBe(Js.true_);
+      |> Expect.toBe(true);
     },
   );
   test(
@@ -184,17 +184,17 @@ describe("object tests", () => {
       let handler = v => {
         let handlerResult =
           switch (v) {
-          | `Valid(_) => Js.false_
+          | `Valid(_) => false
           | `Invalid(err) =>
             let x = Ajv.Error.toDict(err);
-            Belt_MapString.has(x, "messages") ? Js.true_ : Js.false_;
+            Belt_MapString.has(x, "messages") ? true : false;
           };
         handlerResult;
       };
       validate(schema, validData)
       |> handler
       |> Expect.expect
-      |> Expect.toBe(Js.true_);
+      |> Expect.toBe(true);
     },
   );
   test("disrespected minProperties should report invalid field name", () => {
@@ -202,16 +202,16 @@ describe("object tests", () => {
     let handler = v => {
       let handlerResult =
         switch (v) {
-        | `Valid(_) => Js.false_
+        | `Valid(_) => false
         | `Invalid(err) =>
           let x = Ajv.Error.toDict(err);
-          Belt_MapString.has(x, "messages") ? Js.true_ : Js.false_;
+          Belt_MapString.has(x, "messages") ? true : false;
         };
       handlerResult;
     };
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
 });

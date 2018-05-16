@@ -2,9 +2,9 @@ open Jest;
 
 describe("numeric tests", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -46,60 +46,60 @@ describe("numeric tests", () => {
       Json.Encode.(object_([("foo", int(0)), ("bar", int(-1))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected maxima should fail to validate", () => {
     let invalidData =
       Json.Encode.(object_([("foo", int(9001)), ("bar", int(0))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, invalidData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected minima should fail to validate", () => {
     let invalidData =
       Json.Encode.(object_([("foo", int(-1)), ("bar", int(-9001))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, invalidData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected exclusive minima should fail to validate", () => {
     let invalidData =
       Json.Encode.(object_([("foo", int(0)), ("bar", int(-9000))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, invalidData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected exclusive maxima should fail to validate", () => {
     let invalidData =
       Json.Encode.(object_([("foo", int(0)), ("bar", int(0))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, invalidData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test(
     "disrespected minimum and exclusiveMaximum should report correct fields",
@@ -169,24 +169,24 @@ describe("numeric tests", () => {
       Json.Encode.(object_([("foo", int(2222)), ("bar", int(3333))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(multipleOfSchema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected multipleOf should fail to validate", () => {
     let validData =
       Json.Encode.(object_([("foo", int(3333)), ("bar", int(2222))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(multipleOfSchema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected multipleOf should report invalid fields", () => {
     let validData =

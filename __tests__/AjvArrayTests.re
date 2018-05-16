@@ -2,9 +2,9 @@ open Jest;
 
 describe("array tests", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -74,12 +74,12 @@ describe("array tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected array limits should fail to validate", () => {
     let validData =
@@ -90,12 +90,12 @@ describe("array tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected array limits should fail to report invalid fields", () => {
     let validData =
@@ -107,29 +107,29 @@ describe("array tests", () => {
     let handler = v => {
       let handlerResult =
         switch (v) {
-        | `Valid(_) => Js.false_
+        | `Valid(_) => false
         | `Invalid(err) =>
           let x = Ajv.Error.toDict(err);
-          Belt_MapString.has(x, "foo") ? Js.true_ : Js.false_;
+          Belt_MapString.has(x, "foo") ? true : false;
         };
       handlerResult;
     };
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected array item type should fail to validate", () => {
     let validData =
       Json.Encode.(object_([("foo", array(int, [|1, 2, 3, 4|]))]));
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected array item type should indicate invalid field", () => {
     let validData =
@@ -141,17 +141,17 @@ describe("array tests", () => {
     let handler = v => {
       let handlerResult =
         switch (v) {
-        | `Valid(_) => Js.false_
+        | `Valid(_) => false
         | `Invalid(err) =>
           let x = Ajv.Error.toDict(err);
-          Belt_MapString.has(x, "foo") ? Js.true_ : Js.false_;
+          Belt_MapString.has(x, "foo") ? true : false;
         };
       handlerResult;
     };
     validate(schema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("respected contains keyword should validate", () => {
     let validData =
@@ -162,12 +162,12 @@ describe("array tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(containsSchema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
   test("disrespected contains keyword should fail to validate", () => {
     let validData =
@@ -176,12 +176,12 @@ describe("array tests", () => {
       );
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     validate(containsSchema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.false_);
+    |> Expect.toBe(false);
   });
   test("disrespected contains keyword should indicate invalid field", () => {
     let validData =
@@ -191,16 +191,16 @@ describe("array tests", () => {
     let handler = v => {
       let handlerResult =
         switch (v) {
-        | `Valid(_) => Js.false_
+        | `Valid(_) => false
         | `Invalid(err) =>
           let x = Ajv.Error.toDict(err);
-          Belt_MapString.has(x, "foo") ? Js.true_ : Js.false_;
+          Belt_MapString.has(x, "foo") ? true : false;
         };
       handlerResult;
     };
     validate(containsSchema, validData)
     |> handler
     |> Expect.expect
-    |> Expect.toBe(Js.true_);
+    |> Expect.toBe(true);
   });
 });

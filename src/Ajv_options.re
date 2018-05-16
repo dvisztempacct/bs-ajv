@@ -7,7 +7,7 @@ module Format = {
     fun
     | Fast => Js.Json.string("fast")
     | Full => Js.Json.string("full")
-    | Ignore => Js.Json.boolean(Js.false_);
+    | Ignore => Js.Json.boolean(false);
 };
 
 module UnknownFormatHandling = {
@@ -17,7 +17,7 @@ module UnknownFormatHandling = {
     | Warn; /* Ignore all uknown formats, output a console warning. */
   let toJson =
     fun
-    | Exception => Js.Json.boolean(Js.true_)
+    | Exception => Js.Json.boolean(true)
     | Ignore(a) => Js.Json.stringArray(a)
     | Warn => Js.Json.string("ignore");
 };
@@ -43,7 +43,7 @@ module RefSetting = {
     | Ignore;
   let toJson =
     fun
-    | Exception => Js.Json.boolean(Js.true_)
+    | Exception => Js.Json.boolean(true)
     | Fail => Js.Json.string("fail")
     | Ignore => Js.Json.string("ignore");
 };
@@ -53,19 +53,19 @@ type t('a) = Js.t('a);
 let make = () : t('a) => Js.Obj.empty();
 
 /* Validation and Reporting options */
-[@bs.set] external setData : (t('a), Js.boolean) => unit = "$data";
+[@bs.set] external setData : (t('a), bool) => unit = "$data";
 
-[@bs.set] external allErrors : (t('a), Js.boolean) => unit = "";
+[@bs.set] external allErrors : (t('a), bool) => unit = "";
 
-[@bs.set] external verbose : (t('a), Js.boolean) => unit = "";
+[@bs.set] external verbose : (t('a), bool) => unit = "";
 
-[@bs.set] external comment : (t('a), Js.boolean) => unit = "$comment";
+[@bs.set] external comment : (t('a), bool) => unit = "$comment";
 
-[@bs.set] external jsonPointers : (t('a), Js.boolean) => unit = "";
+[@bs.set] external jsonPointers : (t('a), bool) => unit = "";
 
-[@bs.set] external uniqueItems : (t('a), Js.boolean) => unit = "";
+[@bs.set] external uniqueItems : (t('a), bool) => unit = "";
 
-[@bs.set] external unicode : (t('a), Js.boolean) => unit = "";
+[@bs.set] external unicode : (t('a), bool) => unit = "";
 
 /* formats: Js.Json.t,  Use addFormat method. */
 [@bs.set] external format : (t('a), Js.Json.t) => unit = "";
@@ -93,33 +93,33 @@ let missingRefs = (t, f) => missingRefs(t, RefSetting.toJson(f));
 let extendRefs = (t, f) => extendRefs(t, RefSetting.toJson(f));
 
 /* Data Modification options (validated data) */
-[@bs.set] external removeAdditional : (t('a), Js.boolean) => unit = "";
+[@bs.set] external removeAdditional : (t('a), bool) => unit = "";
 
-[@bs.set] external useDefaults : (t('a), Js.boolean) => unit = "";
+[@bs.set] external useDefaults : (t('a), bool) => unit = "";
 
-[@bs.set] external coerceTypes : (t('a), Js.boolean) => unit = "";
+[@bs.set] external coerceTypes : (t('a), bool) => unit = "";
 
 /* Asynchronous Validation options */
 /* transpile: Not sure how to type this yet */
 /* Advanced Options */
-[@bs.set] external meta : (t('a), Js.boolean) => unit = "";
+[@bs.set] external meta : (t('a), bool) => unit = "";
 
-[@bs.set] external validateSchema : (t('a), Js.boolean) => unit = "";
+[@bs.set] external validateSchema : (t('a), bool) => unit = "";
 
-[@bs.set] external addUsedSchema : (t('a), Js.boolean) => unit = "";
+[@bs.set] external addUsedSchema : (t('a), bool) => unit = "";
 
-[@bs.set] external inlineRefs : (t('a), Js.boolean) => unit = "";
+[@bs.set] external inlineRefs : (t('a), bool) => unit = "";
 
-[@bs.set] external passContext : (t('a), Js.boolean) => unit = "";
+[@bs.set] external passContext : (t('a), bool) => unit = "";
 
 /* loopRequired: Not sure how to type this yet */
-[@bs.set] external ownProperties : (t('a), Js.boolean) => unit = "";
+[@bs.set] external ownProperties : (t('a), bool) => unit = "";
 
-[@bs.set] external multipleOfPrecision : (t('a), Js.boolean) => unit = "";
+[@bs.set] external multipleOfPrecision : (t('a), bool) => unit = "";
 
-[@bs.set] external messages : (t('a), Js.boolean) => unit = "";
+[@bs.set] external messages : (t('a), bool) => unit = "";
 
-[@bs.set] external sourceCode : (t('a), Js.boolean) => unit = "";
+[@bs.set] external sourceCode : (t('a), bool) => unit = "";
 /* processCode: Not sure how to type this yet */
 /* cache: Not sure how to type this yet */
 /* serialize: Not sure how to type this yet */

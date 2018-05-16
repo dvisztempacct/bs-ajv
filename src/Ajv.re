@@ -38,7 +38,7 @@ let compile = (schema, t) => {
   let isAsync =
     schema
     |> Json.Decode.(optional(field("$async", boolean)))
-    |> Js.Option.getWithDefault(Js.false_)
+    |> Js.Option.getWithDefault(false)
     |> Js.to_bool;
   let run = json => v(json, null, null, null, null);
   let classify = json =>
@@ -65,7 +65,7 @@ external validate :
     [@bs.unwrap] [ | `Schema(schema) | `Key(string) | `Ref(string)],
     Js.Json.t
   ) =>
-  Js.boolean =
+  bool =
   "";
 
 [@bs.send.pipe: t]

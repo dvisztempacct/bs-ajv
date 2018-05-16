@@ -25,7 +25,7 @@ describe("Ajv Custom Keywords", () =>
       Json.Encode.(
         object_([
           ("range", array(Json.Encode.float, [|2.0, 4.0|])),
-          ("exclusiveRange", boolean(Js.true_)),
+          ("exclusiveRange", boolean(true)),
         ])
       );
     let validate =
@@ -35,8 +35,8 @@ describe("Ajv Custom Keywords", () =>
       };
     let handler =
       fun
-      | `Valid(_) => Js.true_
-      | `Invalid(_) => Js.false_;
+      | `Valid(_) => true
+      | `Invalid(_) => false;
     let genTest = (msg, input, expected) =>
       test(msg, () =>
         validate(Json.Encode.float(input))
@@ -44,10 +44,10 @@ describe("Ajv Custom Keywords", () =>
         |> Expect.expect
         |> Expect.toBe(expected)
       );
-    genTest("2.01 should pass", 2.01, Js.true_);
-    genTest("3.99 should pass", 3.99, Js.true_);
-    genTest("2.0 should fail", 2.0, Js.false_);
-    genTest("4.0 should fail", 4.0, Js.false_);
+    genTest("2.01 should pass", 2.01, true);
+    genTest("3.99 should pass", 3.99, true);
+    genTest("2.0 should fail", 2.0, false);
+    genTest("4.0 should fail", 4.0, false);
   })
 );
 
@@ -55,7 +55,7 @@ describe("Ajv Custom Async Keywords", () =>
   describe("Ajv Docs: checkIdExists Keyword", () => {
     let check = Ajv.Keyword.make();
     Ajv.Keyword.setType(check, "number");
-    Ajv.Keyword.setIsAsync(check, Js.true_);
+    Ajv.Keyword.setIsAsync(check, true);
     Ajv.Keyword.setAsyncValidator(
       check,
       (schema, data, _) => {
@@ -81,7 +81,7 @@ describe("Ajv Custom Async Keywords", () =>
     let schema =
       Json.Encode.(
         object_([
-          ("$async", boolean(Js.true_)),
+          ("$async", boolean(true)),
           (
             "properties",
             object_([
@@ -120,18 +120,18 @@ describe("Ajv Custom Async Keywords", () =>
             validate(json)
             |> then_(
                  fun
-                 | `Invalid(_) => Js.false_ |> resolve
-                 | `Valid(_) => Js.true_ |> resolve,
+                 | `Invalid(_) => false |> resolve
+                 | `Valid(_) => true |> resolve,
                )
-            |> catch(_ => resolve(Js.false_))
+            |> catch(_ => resolve(false))
             |> then_(res =>
                  res |> Expect.expect |> Expect.toBe(expected) |> resolve
                )
           );
         },
       );
-    genTest("valid data", 1, 19, Js.true_);
-    genTest("invalid userId", 2, 19, Js.false_);
-    genTest("invalid postId", 1, 20, Js.false_);
+    genTest("valid data", 1, 19, true);
+    genTest("invalid userId", 2, 19, false);
+    genTest("invalid postId", 1, 20, false);
   })
 );

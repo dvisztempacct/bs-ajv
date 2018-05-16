@@ -6,23 +6,21 @@ let make: unit => t({..});
 
 [@bs.set]
 external setValidator :
-  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.boolean) => unit =
+  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => bool) => unit =
   "validate";
 
 [@bs.set]
 external setAsyncValidator :
-  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(Js.boolean)) =>
-  unit =
+  (t('a), (Js.Json.t, Js.Json.t, Js.Json.t) => Js.Promise.t(bool)) => unit =
   "validate";
 
 [@bs.set]
-external setCompiler :
-  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.boolean) => unit =
+external setCompiler : (t('a), (Js.Json.t, Js.Json.t, 'b) => bool) => unit =
   "compile";
 
 [@bs.set]
 external setAsyncCompiler :
-  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.Promise.t(Js.boolean)) => unit =
+  (t('a), (Js.Json.t, Js.Json.t, 'b) => Js.Promise.t(bool)) => unit =
   "compile";
 
 [@bs.set]
@@ -39,12 +37,10 @@ external setMetaSchema :
   (t('a), [@bs.unwrap] [ | `Inline(Js.Json.t) | `Ref(string)]) => unit =
   "metaSchema";
 
-[@bs.set] external setModifying : (t('a), Js.boolean) => unit = "modifying";
+[@bs.set] external setModifying : (t('a), bool) => unit = "modifying";
 
-[@bs.set]
-external setValidationResult : (t('a), Js.boolean) => unit = "valid";
+[@bs.set] external setValidationResult : (t('a), bool) => unit = "valid";
 
-[@bs.set]
-external setHasDataReference : (t('a), Js.boolean) => unit = "$data";
+[@bs.set] external setHasDataReference : (t('a), bool) => unit = "$data";
 
-[@bs.set] external setIsAsync : (t('a), Js.boolean) => unit = "async";
+[@bs.set] external setIsAsync : (t('a), bool) => unit = "async";

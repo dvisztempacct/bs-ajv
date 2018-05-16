@@ -2,9 +2,9 @@ open Jest;
 
 describe("json pointer escaping tests", () => {
   let options = Ajv_options.make();
-  Ajv_options.allErrors(options, Js.true_);
-  Ajv_options.jsonPointers(options, Js.true_);
-  Ajv_options.removeAdditional(options, Js.true_);
+  Ajv_options.allErrors(options, true);
+  Ajv_options.jsonPointers(options, true);
+  Ajv_options.removeAdditional(options, true);
   let validate = (schema, document) => {
     let validate_ajv =
       switch (Ajv.ajv(options) |> Ajv.compile(schema)) {
@@ -33,17 +33,17 @@ describe("json pointer escaping tests", () => {
       let handler = v => {
         let handlerResult =
           switch (v) {
-          | `Valid(_) => Js.false_
+          | `Valid(_) => false
           | `Invalid(err) =>
             let x = Ajv.Error.toDict(err);
-            Belt_MapString.has(x, "foo/bar~baz") ? Js.true_ : Js.false_;
+            Belt_MapString.has(x, "foo/bar~baz") ? true : false;
           };
         handlerResult;
       };
       validate(schema, invalidData)
       |> handler
       |> Expect.expect
-      |> Expect.toBe(Js.true_);
+      |> Expect.toBe(true);
     },
   );
 });
