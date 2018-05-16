@@ -65,7 +65,8 @@ module RawValidationError = {
     };
   };
   /* See RFC6901 for details on escaping JSON Pointers */
-  let unescapeJsonPointerRegexp = Js.Re.fromStringWithFlags({|~[01]|}, ~flags="g");
+  let unescapeJsonPointerRegexp =
+    Js.Re.fromStringWithFlags({|~[01]|}, ~flags="g");
   let unescapeJsonPointerEscapedSubstr = (s, _, _) =>
     s.[1] == '0' ? "~" : "/";
   let unescapeJsonPointerStr = s =>
