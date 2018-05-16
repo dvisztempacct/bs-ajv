@@ -13,10 +13,9 @@ describe("Ajv Custom Keywords", () =>
           | [|min, max|] => (min, max)
           | _ => failwith("range only accepts a 2 element array.")
           };
-        let parentDecoder = Json.Decode.(field("exclusiveRange", boolean));
-        parentDecoder(parentSchema) |> Js.to_bool ?
-          x => (x > min && x < max) |> Js.Boolean.to_js_boolean :
-          (x => (x >= min && x <= max) |> Js.Boolean.to_js_boolean);
+        let parentDecoder = Json.Decode.(field("exclusiveRange", bool));
+        parentDecoder(parentSchema) ?
+          x => x > min && x < max : (x => x >= min && x <= max);
       },
     );
     let options = Ajv.Options.make();
@@ -25,7 +24,7 @@ describe("Ajv Custom Keywords", () =>
       Json.Encode.(
         object_([
           ("range", array(Json.Encode.float, [|2.0, 4.0|])),
-          ("exclusiveRange", boolean(true)),
+          ("exclusiveRange", bool(true)),
         ])
       );
     let validate =
@@ -70,8 +69,7 @@ describe("Ajv Custom Async Keywords", () =>
         Js.(
           switch (result) {
           | `Err(msg) => Promise.reject(Failure(msg))
-          | `Ok(isValid) =>
-            isValid |> Boolean.to_js_boolean |> Promise.resolve
+          | `Ok(isValid) => isValid |> Promise.resolve
           }
         );
       },
@@ -81,7 +79,7 @@ describe("Ajv Custom Async Keywords", () =>
     let schema =
       Json.Encode.(
         object_([
-          ("$async", boolean(true)),
+          ("$async", bool(true)),
           (
             "properties",
             object_([
