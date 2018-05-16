@@ -17,7 +17,7 @@ describe("Ajv Custom Keywords", () =>
         parentDecoder(parentSchema) |> Js.to_bool ?
           x => (x > min && x < max) |> Js.Boolean.to_js_boolean :
           (x => (x >= min && x <= max) |> Js.Boolean.to_js_boolean);
-      }
+      },
     );
     let options = Ajv.Options.make();
     let ajv = Ajv.ajv(options) |> Ajv.addKeyword("range", range);
@@ -25,7 +25,7 @@ describe("Ajv Custom Keywords", () =>
       Json.Encode.(
         object_([
           ("range", array(Json.Encode.float, [|2.0, 4.0|])),
-          ("exclusiveRange", boolean(Js.true_))
+          ("exclusiveRange", boolean(Js.true_)),
         ])
       );
     let validate =
@@ -62,18 +62,19 @@ describe("Ajv Custom Async Keywords", () =>
         let id = Json.Decode.int(data);
         let table = Json.Decode.(field("table", string, schema));
         let result =
-          switch table {
+          switch (table) {
           | "users" => `Ok(id == 1)
           | "posts" => `Ok(id == 19)
           | _ => `Err({j|Invalid table: $table|j})
           };
         Js.(
-          switch result {
+          switch (result) {
           | `Err(msg) => Promise.reject(Failure(msg))
-          | `Ok(isValid) => isValid |> Boolean.to_js_boolean |> Promise.resolve
+          | `Ok(isValid) =>
+            isValid |> Boolean.to_js_boolean |> Promise.resolve
           }
         );
-      }
+      },
     );
     let options = Ajv.Options.make();
     let ajv = Ajv.ajv(options) |> Ajv.addKeyword("idExists", check);
@@ -88,18 +89,18 @@ describe("Ajv Custom Async Keywords", () =>
                 "userId",
                 object_([
                   ("type", string("integer")),
-                  ("idExists", object_([("table", string("users"))]))
-                ])
+                  ("idExists", object_([("table", string("users"))])),
+                ]),
               ),
               (
                 "postId",
                 object_([
                   ("type", string("integer")),
-                  ("idExists", object_([("table", string("posts"))]))
-                ])
-              )
-            ])
-          )
+                  ("idExists", object_([("table", string("posts"))])),
+                ]),
+              ),
+            ]),
+          ),
         ])
       );
     let validate =
@@ -120,14 +121,14 @@ describe("Ajv Custom Async Keywords", () =>
             |> then_(
                  fun
                  | `Invalid(_) => Js.false_ |> resolve
-                 | `Valid(_) => Js.true_ |> resolve
+                 | `Valid(_) => Js.true_ |> resolve,
                )
-            |> catch((_) => resolve(Js.false_))
+            |> catch(_ => resolve(Js.false_))
             |> then_(res =>
                  res |> Expect.expect |> Expect.toBe(expected) |> resolve
                )
           );
-        }
+        },
       );
     genTest("valid data", 1, 19, Js.true_);
     genTest("invalid userId", 2, 19, Js.false_);
