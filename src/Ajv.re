@@ -124,8 +124,6 @@ external addFormat :
 
 [@bs.send.pipe: t] external removeKeyword : string => t = "";
 
-[@bs.send.pipe: t] external errorsText : array(errors) => string = "";
-
 let getKeyword = (name, ajv) =>
   switch (ajv |> getKeyword(name) |> Js.Json.classify) {
   | Js.Json.JSONObject(o) => `Keyword(o)
@@ -151,7 +149,7 @@ let compileSync = (schema, ajv) => {
 let compileAsync = (schema, ajv) => {
   let validator = compile(schema, ajv);
   switch (validator) {
-  | `Sync(fn) =>
+  | `Sync(_) =>
     /* TODO consider simply wrapping the sync validator to ease the consumer's life */
     raise(Failure("please use compileSync to compile sync validators"))
   | `Async(fn) => fn

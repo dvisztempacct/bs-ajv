@@ -28,8 +28,6 @@ type validator =
 
 [@bs.module] [@bs.new] external ajv : Options.t('a) => t = "ajv";
 
-[@bs.send.pipe: t] external compile : schema => validator = "";
-
 [@bs.get] external getErrors : validator => errors = "errors";
 
 let compile:
@@ -131,6 +129,8 @@ let setAsyncValidator:
   unit;
 
 let addKeyword: (string, keyword('a), t) => t;
+
+let removeKeyword: (string, t) => t;
 
 let setKeywordType: (Ajv_keyword.t('a), string) => unit;
 
